@@ -10,14 +10,22 @@
 <body>
     <section class="game-container">
         <h1>Memory Game!</h1>
-        <button onclick="newGame()">New Game</button>
+        <p>FIND ALL THE MATCHING PAIRS!</p>
+        <section style="display: flex; justify-content: center; gap: 10px; align-items: center;">
+            <button onclick="newGame()">New Game</button>
+            <select id="difficulty" onchange="newGame()">
+                <option value="4" selected>4x4 (Easy)</option>
+                <option value="6">6x6 (Medium)</option>
+                <option value="8">8x8 (Hard)</option>
+            </select>
+        </section>
 
-        <p>Moves: <span id="moves">0</span></p>
-        <p>Time: <span id="timer">0</span>s</p>
+        <p>MOVES: <span id="moves">0</span></p>
+        <p>TIME: <span id="timer">0</span>s</p>
 
         <section class="game-board">
-            <div class="cards-container" id="cardsContainer">
-            </div>
+            <section class="cards-container" id="cardsContainer">
+            </section>
         </section>
     </section>
     
