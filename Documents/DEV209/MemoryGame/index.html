@@ -3,9 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="node.js"></script>
+    <link rel="stylesheet" href="style.css">
     <title>Memory Game</title>
 </head>
 <body>
+    <section class="game-container">
+        <h1>Memory Game!</h1>
+        <button onclick="newGame()">New Game</button>
+
+        <p>Moves: <span id="moves">0</span></p>
+        <p>Time: <span id="timer">0</span>s</p>
+
+        <section class="game-board">
+            <div class="cards-container" id="cardsContainer">
+            </div>
+        </section>
+    </section>
     
 </body>
 </html>
