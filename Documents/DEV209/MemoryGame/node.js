@@ -28,12 +28,13 @@ function saveGameState() {
         moves,
         time
     };
-    localStorage.setItem('memoryGameState', JSON.stringify(gameState));
+    //Using sessionStorage so tabs don't share the same saved game
+    sessionStorage.setItem('memoryGameState', JSON.stringify(gameState));
 }
 
-// Load game state from localStorage
+// Retrieve saved game state from localStorage
 function loadGameState() {
-    const saved = localStorage.getItem('memoryGameState');
+    const saved = sessionStorage.getItem('memoryGameState');
     if (saved) {
         try {
             return JSON.parse(saved);
@@ -50,7 +51,7 @@ function newGame() {
     let difficulty;
 
     if (savedState) {
-        // Restore previous game state
+        // Restore previous game
         difficulty = savedState.difficulty;
         shuffledLetters = savedState.shuffledLetters;
         matchedCards = savedState.matchedCards;
@@ -73,13 +74,13 @@ function newGame() {
 
     clearInterval(timerInterval);
 
-    document.getElementById('moves').textContent = moves;
+    document.getElementById('global-moves-display').textContent = moves;
     document.getElementById('timer').textContent = time;
 
     updateGridLayout(difficulty);
     createCards();
 
-    // Restore visual state of matched cards
+    // Show matched cards visually
     matchedCards.forEach(index => {
         const card = document.querySelector(`[data-index="${index}"]`);
         if (card) {
@@ -141,12 +142,14 @@ function flipCard(e) {
 
     if (flippedCards.length === 2) {
         moves++;
-        document.getElementById('moves').textContent = moves;
+        document.getElementById('global-moves-display').textContent = moves;
+        incrementGlobalMoves();
         saveGameState();
         checkMatch();
     }
 }
 
+// Compare flipped cards
 function checkMatch() {
     canFlip = false;
 
@@ -155,6 +158,7 @@ function checkMatch() {
     const secondLetter = shuffledLetters[secondIndex];
 
     if (firstLetter === secondLetter) {
+        // If cards match keep them flipped
         matchedCards.push(firstIndex, secondIndex);
 
         document.querySelector(`[data-index="${firstIndex}"]`).classList.add('matched');
@@ -163,6 +167,7 @@ function checkMatch() {
         flippedCards = [];
         canFlip = true;
 
+        // Check for win
         if (matchedCards.length === letters.length) {
             clearInterval(timerInterval);
             setTimeout(() => {
@@ -170,6 +175,7 @@ function checkMatch() {
             }, 500);
         }
     } else {
+        // If no match flip back after 1 second
         setTimeout(() => {
             document.querySelector(`[data-index="${firstIndex}"]`).classList.remove('flipped');
             document.querySelector(`[data-index="${secondIndex}"]`).classList.remove('flipped');
@@ -187,9 +193,30 @@ function startTimer() {
     }, 1000);
 }
 
-// Clear saved game when starting fresh
+// Clear saved game when restarting
 function clearSavedGame() {
     localStorage.removeItem('memoryGameState');
 }
+
+const GLOBAL_MOVES_KEY = 'total_moves_all_tabs';
+
+function incrementGlobalMoves() {
+    let globalMoves = parseInt(localStorage.getItem(GLOBAL_MOVES_KEY) || '0');
+    globalMoves++;
+    localStorage.setItem(GLOBAL_MOVES_KEY, globalMoves);
+    updateGlobalDisplay(globalMoves);
+}
+
+function updateGlobalDisplay(value) {
+    const el = document.getElementById('global-moves-display');
+    if (el) el.textContent = value;
+}
+
+// Sync UI when other tabs update the count
+window.addEventListener('storage', (e) => {
+    if (e.key === GLOBAL_MOVES_KEY) {
+        updateGlobalDisplay(e.newValue);
+    }
+});
 
 document.addEventListener('DOMContentLoaded', newGame);
