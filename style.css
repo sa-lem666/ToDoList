@@ -1,0 +1,15 @@
+#auth-container, #todo-container {
+    margin: 20px;
+    padding: 20px;
+    font-family: sans-serif;
+}
+
+
+li.done {
+    opacity: 0.6; /*fades completed tasks*/
+}
+
+li.done strong, li.done span {
+    text-decoration: line-through; /* strikes through completed items */
+    color: #888;
+}

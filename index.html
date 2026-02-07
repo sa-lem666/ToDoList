@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta author="Salem Hernandez">
+    <link rel="stylesheet" href="./style.css">
+    <script src="./script.js" defer></script>
+    <title>Your Very Own To-Do List</title>
+</head>
+<body>
+    <section id="app">
+        <section id="auth-container">
+
+            <!--Login Section-->
+            <section id="login-view">
+                <h1>Login</h1>
+                <form id="login-form">
+                    <input type="text" name="username" id="username" placeholder="Username" required>
+                    <input type="password" name="password" id="password" placeholder="Password" required>
+                    <button type="submit">Login</button>
+                </form>
+
+            </section>
+
+            <!--Register Section-->
+            <section id="register-view">
+                <h1>Register</h1>
+                <form id="register-form">
+                    <input type="text" id="reg-username" name="username" placeholder="Username" required>
+                    <input type="password" id="reg-password" name="password" placeholder="Password" required>
+                    <button type="submit">Register</button>
+                </form>
+            </section>
+
+        </section>
+
+            <!--To-Do List Section-->
+            <section id="todo-container" style="display:none;">
+            <header>
+                <h1>Welcome, <span id="user-display"></span></h1>
+                <button onclick="logout()">Logout</button>
+            </header>
+
+            <form id="todo-form">
+                <input type="hidden" name="todo-id" id="todo-id">
+                <input type="text" name="title" id="todo-title" placeholder="Title" required>
+                <textarea name="description" id="todo-desc" placeholder="Description"></textarea>
+                <button type="submit" id="todo-submit-btn">Add Task</button>
+                <button type="button" id="cancel-edit" style="display:none;" onclick="resetTodoForm()">Cancel</button>
+            </form>
+            <ul id="todo-list"></ul>
+            </section>
+
+
+        
+    </section>
+    
+</body>
+</html>
